@@ -101,7 +101,7 @@ local({
                                                     "MM-type Estimators for Linear Regression" = c(val = "lmrob", chk = TRUE),
                                                     "Quantile regression" = c(val = "rq")))
   bg.outliers.chk <- rk.XML.cbox(label = "Remove outliers in the background range", value = "1", un.value = "0")
-  median.chk <- rk.XML.cbox(label = "Use median instead of mean for outlier replacemet", value = "1", un.value = "0")
+  median.chk <- rk.XML.cbox(label = "Use median instead of mean for outliers replacement", value = "1", un.value = "0")
   method.norm.drop <- rk.XML.dropdown(label = "normalization",
                                       options = list("None" = c(val = "none"), 
                                                      "Minimum-Maximum" = c(val = "minm", chk=TRUE),
