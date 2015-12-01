@@ -10,13 +10,13 @@ local({
       person(given = "Stefan", family = "Roediger",
              email = "stefan.roediger@b-tu.de", 
              role = c("aut","cre"))),
-    about = list(desc = "GUI interface to analyse a quantitative isothermal amplification",
+    about = list(desc = "GUI interface to analyze a quantitative isothermal amplification",
                  version = "0.0.1", url = "")
   )
   
   ## help page
   plugin.summary <- rk.rkh.summary(
-    "Analysis of quantitive isothermal amplification (qIA) curve data. The plugin is primarily targetet at the analysis of qIA data from nucleic acid experiments but might be used in other cases too."
+    "Analysis of quantitative isothermal amplification (qIA) curve data. The plugin is primarily targeted at the analysis of qIA data from nucleic acid experiments but might be used in other cases too."
   )
   
   plugin.usage <- rk.rkh.usage(
@@ -68,7 +68,7 @@ local({
   
   # Plot preview
   preview.chk <- rk.XML.preview(label = "Preview")
-  suppress.warnings.chk <- rk.XML.cbox(label = "Show warnings", value = "0", un.value = "-1", )
+  suppress.warnings.chk <- rk.XML.cbox(label = "Show warnings", value = "0", un.value = "-1")
   generic.plot.options <- rk.plotOptions()
   plot.text.color <- rk.plotOptions(embed = "rkward::color_chooser", button = FALSE)
   
