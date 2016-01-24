@@ -11,7 +11,7 @@ local({
              email = "stefan.roediger@b-tu.de", 
              role = c("aut","cre"))),
     about = list(desc = "GUI interface to analyze a quantitative isothermal amplification",
-                 version = "0.0.1", url = "")
+                 version = "0.0.1-1", url = "")
   )
   
   ## help page
@@ -182,8 +182,10 @@ local({
     echo("if (ncol(x) != ncol(y)) {stop(\"Unequal number of X and Y variables given\")}\n\n"),
     echo(scale.axes.drop),
     # find range of X/Y values needed
-    echo("x.range <- range (c (x), na.rm = TRUE)\n"),
-    echo("y.range <- range (c (y), na.rm = TRUE)\n\n"),
+    echo("
+	  x.range <- range (c (x), na.rm = TRUE)
+	  y.range <- range (c (y), na.rm = TRUE)
+    \n"),
     
     echo("res.CPP <- lapply(1L:ncol(x), function(i) {\n"),
     echo("if(mean(amptester(y[, i])) > 1) {\n"),
@@ -214,24 +216,28 @@ local({
   
   JS.print <- rk.paste.JS(
     rk.paste.JS.graph(
-      echo("type <- rep(\"", pointtype.drop,"\", length.out = length(y))\n"),
-      echo("col <- c(1:length(y))\n"),
-      echo("pch <- rep(", pch.spin,", length.out = length(y))\n"),
-      echo("par(mfrow = c(1,2))\n"),
-      echo("plot(NA, NA, xlim = x.range, ylim = y.range, main = \"", plot.main,"\", xlab = \"", plot.xlab,"\", ylab = \"", plot.ylab,"\")\n"),
-      # plot variables one X/Y pair at a time
-      echo("for (i in 1L:ncol(x)) {\n"),
-      echo("\tpoints (x[, i], y[, i], pch = pch[i], type = type[i], col = col[i])\n"),
-      echo("\t}\n\n"),
-      echo("legend(\"", legend.pos.drop,"\", colnames(y), ncol = ", ncol.legend.spin,", pch = pch, col = col)\n"),
-      echo("plot(NA, NA, xlim = x.range, ylim = CPP.range, main = \"", plot.main,"\", xlab = \"", plot.xlab,"\", ylab = \"", plot.ylab,"\")\n"),
-      # plot variables one X/Y pair at a time
-      echo("lapply(1L:ncol(x), function(i) {points(x[, i], res.CPP[[i]]$y.norm, pch = pch[i], type = type[i], col = col[i])\n"),
+      echo("
+	type <- rep(\"", pointtype.drop,"\", length.out = length(y))
+	col <- c(1L:length(y))
+	pch <- rep(", pch.spin,", length.out = length(y))
+	par(mfrow = c(1,2))
+	plot(NA, NA, xlim = x.range, ylim = y.range, main = \"", plot.main,"\", xlab = \"", plot.xlab,"\", ylab = \"", plot.ylab,"\")
+	# plot variables one X/Y pair at a time
+	for (i in 1L:ncol(x)) {
+	  points (x[, i], y[, i], pch = pch[i], type = type[i], col = col[i])
+	}
+	legend(\"", legend.pos.drop,"\", colnames(y), ncol = ", ncol.legend.spin,", pch = pch, col = col)
+        plot(NA, NA, xlim = x.range, ylim = CPP.range, main = \"", plot.main,"\", xlab = \"", plot.xlab,"\", ylab = \"", plot.ylab,"\")
+	# plot variables one X/Y pair at a time
+	lapply(1L:ncol(x), function(i) {points(x[, i], res.CPP[[i]]$y.norm, pch = pch[i], type = type[i], col = col[i])
+     \n"),
       ite(show.th.cyc.chk, echo("\tpoints(as.data.frame(res.cyc.th[[i]]), pch = 4, col = 2)\n")),
       echo("})\n"),
       ite(trans.chk, echo("abline(v = c(", bg.range.start.spin,", ", bg.range.end.spin,"), lty = 2, col = \"grey\")\n")),
-      echo("legend(\"", legend.pos.drop,"\", colnames(y), ncol = ", ncol.legend.spin,", pch = pch, col = col)\n"),
-      echo("par(mfrow = c(1,1))\n")
+      echo("
+	    legend(\"", legend.pos.drop,"\", colnames(y), ncol = ", ncol.legend.spin,", pch = pch, col = col)
+	    par(mfrow = c(1,1))
+      \n")
     ),
     ite("full", rk.paste.JS(
       echo("\nrk.print(res.Cq)\n"),
